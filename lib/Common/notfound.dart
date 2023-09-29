@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../Utils/colors.dart';
 import '../Utils/imagePath.dart';
 
@@ -16,11 +16,15 @@ class NotFound extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            notfound,
-            width: 250,
-            height: 250,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Image.asset(
+              notfound,
+              width: Get.width,
+              height: Get.width,
+            ),
           ),
+          Text('Oops!', style: GoogleFonts.getFont('Libre Baskerville', fontSize: 45))
         ],
       ),
     );
