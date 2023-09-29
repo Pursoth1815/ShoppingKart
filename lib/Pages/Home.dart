@@ -2,17 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shoppingkart/Controller/ProductListController.dart';
 import 'package:shoppingkart/Utils/imagePath.dart';
 
-import '../Controller/ProductListController.dart';
 import '../Utils/colors.dart';
 
-class Home extends GetView<productListController> {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => productListController());
+    final ProductListController controller = Get.find();
     controller.fetchCategory();
 
     return Scaffold(
@@ -20,15 +21,13 @@ class Home extends GetView<productListController> {
         body: Obx(
           () {
             return controller.categoryList.isEmpty
-                ? controller.SE == true
-                    ? getBodyDesign()
-                    : const Center(child: CircularProgressIndicator())
-                : getBodyDesign();
+                ? const Center(child: CircularProgressIndicator())
+                : getBodyDesign(controller);
           },
         ));
   }
 
-  Container getBodyDesign() {
+  Container getBodyDesign(ProductListController controller) {
     return Container(
       width: Get.width,
       height: Get.height,
@@ -38,14 +37,14 @@ class Home extends GetView<productListController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Padding(
-              padding: EdgeInsets.only(left: 20),
+          Container(
+              margin: const EdgeInsets.only(left: 20, top: 20),
               child: Text(
                 'Categories',
-                style: TextStyle(
-                  color: colorSplashtext,
-                  height: 1.3,
-                  fontFamily: 'Poppins',
+                style: GoogleFonts.getFont(
+                  'Poppins',
+                  color: colorTextColor,
+                  height: 1.5,
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                 ),
@@ -54,10 +53,10 @@ class Home extends GetView<productListController> {
             height: 240,
             child: Obx(() => ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: /* controller.categoryList.length */ controller.testItemCount.toInt(),
+                  itemCount: controller.categoryList.length,
                   itemBuilder: (context, index) => Padding(
                     padding: EdgeInsets.only(left: index == 0 ? 25 : 0),
-                    child: categoryCardDesign(index),
+                    child: categoryCardDesign(controller, index),
                   ),
                 )),
           ),
@@ -66,28 +65,38 @@ class Home extends GetView<productListController> {
     );
   }
 
-  Widget categoryCardDesign(int index) {
-    return GestureDetector(
+  Widget categoryCardDesign(ProductListController controller, int index) {
+    return Obx(() => GestureDetector(
         onTap: () => {
               controller.setPosition(index),
-              controller.testItemCount = RxInt(4),
             },
         child: Container(
+          width: 150,
           margin: const EdgeInsets.only(right: 20, top: 20, bottom: 20),
           padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: controller.selectedFoodCard == index ? colorprimary : colorWhite, boxShadow: const [
-            BoxShadow(
-              color: colorlightGray,
-              blurRadius: 15,
-            )
-          ]),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: controller.selectedFoodCard.value == index
+                  ? colorprimary
+                  : colorWhite,
+              boxShadow: const [
+                BoxShadow(
+                  color: colorlightGray,
+                  blurRadius: 15,
+                )
+              ]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset(logo, width: 40),
-              const Text(
-                /* controller.categoryList[index].name */ 'Test',
-                style: TextStyle(
+              Image.asset(
+                  controller.categoryList[index].categoryImage == ''
+                      ? imageError
+                      : controller.categoryList[index].categoryImage!,
+                  width: 50),
+              Text(
+                controller.categoryList[index].name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
                   color: colorSplashtext,
                   height: 1.3,
                   fontFamily: 'Poppins',
@@ -97,11 +106,17 @@ class Home extends GetView<productListController> {
               ),
               RawMaterialButton(
                   onPressed: null,
-                  fillColor: controller.selectedFoodCard == index ? colorWhite : colorSplashtext,
+                  fillColor: controller.selectedFoodCard.value == index
+                      ? colorWhite
+                      : colorSplashtext,
                   shape: const CircleBorder(),
-                  child: Icon(Icons.chevron_right_rounded, size: 20, color: controller.selectedFoodCard == index ? colorblack : colorWhite))
+                  child: Icon(Icons.chevron_right_rounded,
+                      size: 20,
+                      color: controller.selectedFoodCard.value == index
+                          ? colorblack
+                          : colorWhite))
             ],
           ),
-        ));
+        )));
   }
 }

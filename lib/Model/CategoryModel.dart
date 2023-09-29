@@ -1,7 +1,7 @@
 class CategoryModel {
-  int organisationID;
-  int categoryCode;
-  String name;
+  final int organisationID;
+  final String categoryCode;
+  final String name;
   final String description;
   final int displayOrder;
   final bool isActive;
@@ -11,10 +11,10 @@ class CategoryModel {
     required this.organisationID,
     required this.name,
     required this.categoryCode,
-    required this.description,
+    this.description = '',
     required this.displayOrder,
     required this.isActive,
-    this.categoryImage,
+    this.categoryImage = '',
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
@@ -22,10 +22,10 @@ class CategoryModel {
       organisationID: json['OrgId'],
       categoryCode: json['Code'],
       name: json['Name'],
-      description: json['ChineseDescription'],
+      description: json['ChineseDescription'] ?? '',
       displayOrder: json['DisplayOrder'],
       isActive: json['IsActive'],
-      categoryImage: json['CategoryImage'],
+      categoryImage: json['CategoryImage'] ?? '',
     );
   }
 }

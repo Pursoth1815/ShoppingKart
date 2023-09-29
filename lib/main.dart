@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shoppingkart/Controller/ProductListController.dart';
 import 'package:shoppingkart/Routes/Pageroutes.dart';
 import 'package:shoppingkart/Routes/Routes.dart';
 
 void main() {
+  Get.put(ProductListController());
   runApp(const MainApp());
 }
 
