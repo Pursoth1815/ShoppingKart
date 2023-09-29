@@ -19,7 +19,7 @@ class _SplashState extends State<Splash> {
     super.initState();
 
     Future.delayed(
-      const Duration(seconds: 5),
+      const Duration(seconds: 3),
       () {
         Get.offAllNamed('/home');
       },
@@ -33,8 +33,7 @@ class _SplashState extends State<Splash> {
       body: Center(
           child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(50.0), // Adjust the radius as needed
+                borderRadius: BorderRadius.circular(50.0), // Adjust the radius as needed
               ),
               elevation: 4.0,
               child: SizedBox(

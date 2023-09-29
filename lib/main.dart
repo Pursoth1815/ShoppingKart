@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shoppingkart/Pages/Home.dart';
-import 'package:shoppingkart/Pages/Splash.dart';
+import 'package:shoppingkart/Routes/Pageroutes.dart';
+import 'package:shoppingkart/Routes/Routes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,18 +15,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Shopping Kart',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/splash',
-      getPages: [
-        // Define your app's routes using GetPage
-        GetPage(name: '/splash', page: () => const Splash()),
-        GetPage(name: '/home', page: () => const Home()),
-        // Add more routes as needed
-      ],
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Shopping Kart',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: Routes.INITIAL,
+        getPages: AppPages.pages);
   }
 }
