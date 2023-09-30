@@ -3,4 +3,5 @@
 abstract class Routes {
   static const INITIAL = '/';
   static const HOME = '/home';
+  static const VIEW_PRODUCT = '/view_product';
 }

@@ -3,6 +3,8 @@
 import 'package:get/get.dart';
 import 'package:shoppingkart/Pages/Home.dart';
 import 'package:shoppingkart/Pages/Splash.dart';
+import 'package:shoppingkart/Pages/ViewProduct.dart';
+
 import 'Routes.dart';
 
 abstract class AppPages {
@@ -14,6 +16,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.HOME,
       page: () => const Home(),
+    ),
+    GetPage(
+      name: Routes.VIEW_PRODUCT,
+      page: () => const ViewProduct(),
     )
   ];
 }
