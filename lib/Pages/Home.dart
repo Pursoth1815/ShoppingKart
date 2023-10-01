@@ -94,73 +94,83 @@ class Home extends GetView {
 
   //***************************** Sub Category Card Design ****************************/
 
-  Container SubCategoryCardDesign(ProductListController controller) =>
-      Container(
+  Widget SubCategoryCardDesign(ProductListController controller) => Container(
         width: Get.width,
         height: Get.height,
         color: colorSplashBG,
         margin: const EdgeInsets.all(20),
         child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0),
             itemCount: controller.subCategoryList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: colorWhite,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: SizedBox(
-                          child: Image.asset(
-                        controller.subCategoryList[index].categoryImage == ''
-                            ? noImage
-                            : controller.subCategoryList[index].categoryImage!,
-                        width: 250,
-                        height: 125,
-                      )),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'View Details >>',
-                          style: GoogleFonts.getFont(
-                            'Poppins',
-                            color: colorTextColor,
-                            height: 1.5,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+              return GestureDetector(
+                onTap: () {
+                  controller.fetchProducts(
+                      controller.subCategoryList[index].categoryCode,
+                      controller.subCategoryList[index].subCategoryCode);
+
+                  Get.toNamed('/view_product');
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: colorWhite,
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: SizedBox(
+                            child: Image.asset(
+                          controller.subCategoryList[index].categoryImage == ''
+                              ? noImage
+                              : controller
+                                  .subCategoryList[index].categoryImage!,
+                          width: 250,
+                          height: 125,
+                        )),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'View Details >>',
+                            style: GoogleFonts.getFont(
+                              'Poppins',
+                              color: colorTextColor,
+                              height: 1.5,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          controller.subCategoryList[index].name,
-                          style: GoogleFonts.getFont(
-                            'Poppins',
-                            color: colorTaleColor,
-                            height: 1.5,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                      Positioned(
+                        bottom: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            controller.subCategoryList[index].name,
+                            style: GoogleFonts.getFont(
+                              'Poppins',
+                              color: colorTaleColor,
+                              height: 1.5,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),

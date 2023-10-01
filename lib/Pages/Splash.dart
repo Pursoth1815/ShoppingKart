@@ -34,24 +34,24 @@ class _SplashState extends State<Splash> {
           child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(50.0), // Adjust the radius as needed
+                    BorderRadius.circular(150.0), // Adjust the radius as needed
               ),
               elevation: 4.0,
               child: SizedBox(
-                width: 100,
-                height: 100,
+                width: 150,
+                height: 150,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
                       logo,
-                      width: 50,
-                      height: 50,
+                      width: 75,
+                      height: 75,
                     ),
                     const Text(
                       'Shopping Kart',
-                      style: TextStyle(color: colorSplashtext, fontSize: 12),
+                      style: TextStyle(color: colorSplashtext, fontSize: 15),
                     )
                   ],
                 ),

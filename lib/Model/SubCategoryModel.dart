@@ -1,6 +1,7 @@
 class SubCategoryModel {
   final int organisationID;
   final String categoryCode;
+  final String subCategoryCode;
   final String name;
   final String description;
   final int displayOrder;
@@ -11,6 +12,7 @@ class SubCategoryModel {
     required this.organisationID,
     required this.name,
     required this.categoryCode,
+    required this.subCategoryCode,
     this.description = '',
     required this.displayOrder,
     required this.isActive,
@@ -21,6 +23,7 @@ class SubCategoryModel {
     return SubCategoryModel(
       organisationID: json['OrgId'],
       categoryCode: json['Code'],
+      subCategoryCode: json['CategoryCode'],
       name: json['Name'],
       description: json['ChineseDescription'] ?? '',
       displayOrder: json['DisplayOrder'],
