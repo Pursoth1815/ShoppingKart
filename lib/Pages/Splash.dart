@@ -1,4 +1,6 @@
-// ignore_for_file: file_names, unused_element, depend_on_referenced_packages
+// ignore_for_file: file_names, unused_element, depend_on_referenced_packages, non_constant_identifier_names
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,16 +16,84 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  // bool
+  bool ActiveConnection = false;
+
   @override
   void initState() {
     super.initState();
 
-    Future.delayed(
-      const Duration(seconds: 3),
-      () {
-        Get.offAllNamed('/home');
+    initialize();
+  }
+
+  Future initialize() async {
+    await CheckUserConnection();
+
+    ActiveConnection
+        ? Future.delayed(
+            const Duration(seconds: 3),
+            () {
+              Get.offAllNamed('/home');
+            },
+          )
+        : NoInternetDialog(context);
+  }
+
+  void NoInternetDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.redAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          title: const Icon(
+            Icons.error,
+            color: Colors.white,
+            size: 48.0,
+          ),
+          content: const Text(
+            'No Internet Connection',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
       },
     );
+  }
+
+  Future CheckUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        ActiveConnection = false;
+      });
+    }
   }
 
   @override

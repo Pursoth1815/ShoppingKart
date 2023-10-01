@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shoppingkart/Common/Appbar.dart';
 import 'package:shoppingkart/Controller/ProductListController.dart';
 import 'package:shoppingkart/Utils/colors.dart';
+import 'package:shoppingkart/Utils/imagePath.dart';
 
 class ViewProduct extends GetView {
   const ViewProduct({super.key});
@@ -12,63 +14,75 @@ class ViewProduct extends GetView {
   @override
   Widget build(BuildContext context) {
     final ProductListController controller = Get.find();
-    return Scaffold(
-        appBar: CommonAppBar(title: "View Products"),
-        backgroundColor: colorWhite,
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 25),
-                width: Get.width - 40,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: colorTaleColor),
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: colorSplashBG,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: TextField(
-                        controller: controller.textController,
-                        decoration: const InputDecoration(
-                          hintText: 'Search Products',
-                          hintStyle:
-                              TextStyle(fontSize: 18, color: colorTextColor),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 12.0),
-                          border: InputBorder.none,
+    return WillPopScope(
+      onWillPop: () async {
+        controller.productList.clear();
+        return true;
+      },
+      child: Scaffold(
+          appBar: CommonAppBar(title: "View Products"),
+          backgroundColor: colorWhite,
+          body: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 25),
+                  width: Get.width - 40,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: colorTaleColor),
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: colorSplashBG,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: TextField(
+                          controller: controller.textController,
+                          decoration: const InputDecoration(
+                            hintText: 'Search Products',
+                            hintStyle:
+                                TextStyle(fontSize: 18, color: colorTextColor),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 12.0),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.search,
-                          color: colorTaleColor,
+                      Expanded(
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.search,
+                            color: colorTaleColor,
+                          ),
+                          onPressed: () {
+                            controller.filterProducts();
+                          },
                         ),
-                        onPressed: () {
-                          controller.filterProducts();
-                        },
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                  margin: const EdgeInsets.all(15),
-                  child: getProductList(context, controller)),
-            ],
-          ),
-        ));
+                Container(
+                    margin: const EdgeInsets.all(15),
+                    child: getProductList(context, controller)),
+              ],
+            ),
+          )),
+    );
   }
 
   Widget getProductList(
       BuildContext context, ProductListController controller) {
+    return Obx(() => controller.productList.isEmpty
+        ? noDataFound()
+        : getProducts(controller, context));
+  }
+
+  Obx getProducts(ProductListController controller, BuildContext context) {
     return Obx(
       () => GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
@@ -144,6 +158,51 @@ class ViewProduct extends GetView {
             ),
           );
         },
+      ),
+    );
+  }
+
+  //***************************** No Data Found Design ****************************/
+
+  Container noDataFound() {
+    return Container(
+      width: Get.width,
+      height: Get.width - 75,
+      margin: const EdgeInsets.all(20),
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: colorWhite,
+            boxShadow: const [
+              BoxShadow(
+                color: colorlightGray,
+                blurRadius: 15,
+              )
+            ]),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                notDatad,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Text(
+                'No Data Found',
+                style: GoogleFonts.getFont(
+                  'Poppins',
+                  color: colorlightGray,
+                  height: 1.5,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
